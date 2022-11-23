@@ -4,6 +4,7 @@ using Hiriczko_Andreea_Flavia_Lab2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hiriczko_Andreea_Flavia_Lab2.Migrations
 {
     [DbContext(typeof(Hiriczko_Andreea_Flavia_Lab2Context))]
-    partial class Hiriczko_Andreea_Flavia_Lab2ContextModelSnapshot : ModelSnapshot
+    [Migration("20221123133901_BookCategory")]
+    partial class BookCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
