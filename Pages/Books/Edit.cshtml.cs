@@ -31,20 +31,25 @@ namespace Hiriczko_Andreea_Flavia_Lab2.Pages.Books
             }
 
             Book = await _context.Book
- .Include(b => b.Publisher)
- .Include(b => b.BookCategories).ThenInclude(b => b.Category)
- .AsNoTracking()
- .FirstOrDefaultAsync(m => m.ID == id);
-            if (Book == null)
+                .Include(b => b.Publisher)
+                .Include(b => b.BookCategories).ThenInclude(b => b.Category)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            var book = await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
+            if (book == null)
             {
                 return NotFound();
             }
+
             PopulateAssignedCategoryData(_context, Book);
-            Book = Book;
-            ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID",
-"PublisherName");
-            ViewData["AuthorID"] = new SelectList(_context.Set<Author>(), "ID",
-"FullName");
+
+
+            Book = book;
+            ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID", "PublisherName");
+
+            ViewData["AuthorID"] = new SelectList(_context.Set<Author>(), "ID", "LastName");
+
             return Page();
         }
 
@@ -58,10 +63,10 @@ selectedCategories)
                 return NotFound();
             }
             var bookToUpdate = await _context.Book
-            .Include(i => i.Publisher)
-            .Include(i => i.BookCategories)
-            .ThenInclude(i => i.Category)
-            .FirstOrDefaultAsync(s => s.ID == id);
+                .Include(i => i.Publisher)
+                .Include(i => i.BookCategories)
+                .ThenInclude(i => i.Category)
+                .FirstOrDefaultAsync(s => s.ID == id);
             if (bookToUpdate == null)
             {
                 return NotFound();
@@ -76,6 +81,8 @@ selectedCategories)
                 await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }
+            //Apelam UpdateBookCategories pentru a aplica informatiile din checkboxuri la entitatea Books care
+            //este editata
             UpdateBookCategories(_context, selectedCategories, bookToUpdate);
             PopulateAssignedCategoryData(_context, bookToUpdate);
             return Page();
